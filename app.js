@@ -21,7 +21,23 @@ app.get("/", function(req, res){
   res.render("home", {homeStart: homeStartingContent});
 })
 
+app.get("/about", function(req, res){
+  res.render("about", {aboutMe: aboutContent});
+})
 
+app.get("/contact", function(req, res){
+  res.render("contact", {contactMe: contactContent});
+})
+
+app.post("/compose", function(req, res){
+  let publish = req.body.postTitile;
+  console.log(publish);
+})
+
+app.get("/compose", function(req, res){
+  res.render("compose");
+  
+})
 
 
 
