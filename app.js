@@ -1,5 +1,3 @@
-//jshint esversion:6
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -15,14 +13,18 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-
+const posts = [];
 
 app.get("/", function(req, res){
-  res.render("home", {homeStart: homeStartingContent});
+      res.render("home", {homeStart: homeStartingContent, posts: posts});
+    
+
+  
 })
 
 app.get("/about", function(req, res){
   res.render("about", {aboutMe: aboutContent});
+ 
 })
 
 app.get("/contact", function(req, res){
@@ -30,20 +32,19 @@ app.get("/contact", function(req, res){
 })
 
 app.post("/compose", function(req, res){
-  let publish = req.body.postTitile;
-  console.log(publish);
+ 
+  const post = {
+    title: req.body.postTitile,
+    content: req.body.postPost,
+  };
+  posts.push(post);
+  res.redirect("/");
 })
 
 app.get("/compose", function(req, res){
   res.render("compose");
   
 })
-
-
-
-
-
-
 
 app.listen(3000, function() {
   console.log("Server started on port 3000");
