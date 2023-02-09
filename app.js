@@ -17,8 +17,7 @@ app.use(express.static("public"));
 const posts = [];
 
 app.get("/", function(req, res){
-      res.render("home", {homeStart: homeStartingContent, posts: posts});
-
+          res.render("home", {homeStart: homeStartingContent, posts: posts});
 })
 
 app.get("/about", function(req, res){
@@ -27,7 +26,8 @@ app.get("/about", function(req, res){
 })
 
 app.get("/contact", function(req, res){
-  res.render("contact", {contactMe: contactContent});
+  //const limit = Str(contactContent).limit(6).get();
+  res.render("contact", {contactMe: Str(contactContent).limit(100).get()});
 })
 
 app.post("/compose", function(req, res){
@@ -46,21 +46,22 @@ app.get("/compose", function(req, res){
 })
 
 app.get("/posts/:postName", (req, res) => {
-  const postReq = req.params.postName;
+  const postReq = _.lowerCase(req.params.postName);
 
   posts.forEach(function(post) {
-    const storedPost = post.title;
-    const encodedInput = _.kebabCase(storedPost);
-    console.log(encodedInput);
+    const storedPost = _.lowerCase(post.title);
 
-    if(postReq === encodedInput){
-      console.log("Match up!");
-    }else{
-      console.log("Did not match!");
+    if(postReq === storedPost){
+      res.render("post", {title: post.title, content: post.content});
     }
   });  
 });
 
+app.post("/posts/:postName", (req, res) => {
+  res.render("post");
+})
+
 app.listen(3000, function() {
   console.log("Server started on port 3000");
 });
+ 
